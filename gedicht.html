@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Golvende Gedicht Animatie</title>
+<style>
+  body {
+    margin: 0;
+    overflow: hidden;
+    background-color: #000; /* zwarte achtergrond voor contrast */
+    font-family: sans-serif;
+  }
+  canvas {
+    display: block;
+  }
+</style>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+
+<script>
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+const words = [
+  "Denkend aan Holland zie ik breede rivieren traag door oneindig laagland gaan."
+];
+
+const colors = ["#FF4C4C","#FF914C","#FFD24C","#4CFF4C","#4CFFD2","#4C6BFF","#D24CFF","#FF4CE1"];
+const letters = [];
+
+let spacing = 0;
+
+// maak letters uit woorden
+words.forEach(word => {
+    for(let char of word + " ") {
+        letters.push({
+            char: char,
+            x: spacing,
+            y: 0,
+            color: colors[Math.floor(Math.random() * colors.length)],
+            size: Math.random() * 30 + 20 // 20px - 50px
+        });
+        spacing += 25; // afstand tussen letters
+    }
+});
+
+// animatie
+function animate() {
+    ctx.clearRect(0,0,canvas.width, canvas.height);
+
+    // teken golvende lijn
+    ctx.beginPath();
+    ctx.strokeStyle = "red";
+    ctx.lineWidth = 3;
+    for(let x = 0; x <= canvas.width; x += 10){
+        let y = canvas.height/2 + Math.sin((x + Date.now()*0.002)/50) * 50;
+        if(x === 0) ctx.moveTo(x,y);
+        else ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+
+    // teken letters op de golvende lijn
+    letters.forEach(letter => {
+        // vind y op golflijn bij x
+        let y = canvas.height/2 + Math.sin((letter.x + Date.now()*0.002)/50) * 50;
+        ctx.fillStyle = letter.color;
+        ctx.font = `${letter.size}px sans-serif`;
+        ctx.fillText(letter.char, letter.x, y);
+
+        // schuif naar rechts
+        letter.x += 1;
+
+        // terug naar links als voorbij scherm
+        if(letter.x > canvas.width) letter.x = -20;
+    });
+
+    requestAnimationFrame(animate);
+}
+
+animate();
+
+// pas canvas aan bij resize
+window.addEventListener("resize", () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+});
+</script>
+</body>
+</html>
