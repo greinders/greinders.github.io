@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sterraster – groeiende ster</title>
+
+<style>
+html, body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    background: black;
+    overflow: hidden;
+    touch-action: manipulation;
+}
+
+/* Overlay afbeelding */
+.image-overlay {
+    position: fixed;
+    inset: 0;
+    background-image: url('landschap-ijssel.jpeg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.5;           
+    pointer-events: none;   
+    z-index: 5;             
+    transition: opacity 0.3s ease; 
+}
+
+/* Stervorm */
+:root {
+    --star-shape: polygon(
+        50% 0%,
+        61% 35%,
+        98% 35%,
+        68% 57%,
+        79% 91%,
+        50% 70%,
+        21% 91%,
+        32% 57%,
+        2% 35%,
+        39% 35%
+    );
+}
+
+/* Sterren */
+.star {
+    width: 40px;
+    height: 40px;
+    background: red;
+    clip-path: var(--star-shape);
+    animation: spin 6s linear infinite;
+    transition:
+        background-color 0.5s ease,
+        width 0.5s ease,
+        height 0.5s ease,
+        left 0.5s ease,
+        top 0.5s ease,
+        box-shadow 0.5s ease;
+    position: absolute;
+}
+
+/* Groeiende ster */
+.star.grown {
+    background: white;
+    z-index: 10;
+    animation: spin 6s linear infinite, pulse 1.5s ease-in-out infinite alternate;
+}
+
+/* Letters / Emoji IN de ster */
+.star .letters {
+    position: absolute;
+    inset: 0;
+    clip-path: var(--star-shape);
+    pointer-events: none;
+}
+
+.star .letter {
+    position: absolute;
+    font-weight: bold;
+    user-select: none;
+    transform: translate(-50%, -50%);
+}
+
+/* Puls animatie */
+@keyframes pulse {
+    0% { box-shadow: 0 0 20px 8px rgba(255,255,255,0.4); }
+    100% { box-shadow: 0 0 40px 15px rgba(255,255,255,0.6); }
+}
+
+/* Rotatie */
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+}
+
+/* Knoppen en slider container */
+.controls {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 10px;
+    box-sizing: border-box;
+    z-index: 20;
+}
+
+.controls button, .controls input[type="range"] {
+    padding: 10px 14px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    color: black;
+}
+
+/* Specifieke knopkleuren */
+.btn-yellow { background: yellow; }
+.btn-gray   { background: lightgray; }
+.btn-blue   { background: lightblue; }
+.btn-orange { background: orange; }
+.btn-reset  { background: red; }
+.btn-rotate { background: violet; }
+.btn-letters{ background: silver; }
+.btn-emoji  { background: pink; }
+.btn-startpagina { background: lightgreen; }
+
+/* Media query voor kleine schermen */
+@media (max-width: 600px) {
+    .controls {
+        padding-left: 10px;
+        padding-right: 10px;
+        padding-bottom: 8px;
+    }
+    .controls button, .controls input[type="range"] {
+        padding: 8px 10px;
+        font-size: 12px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="image-overlay"></div>
+<div id="grid"></div>
+
+<div class="controls">
+    <button class="btn-yellow" data-color="yellow">Geel</button>
+    <button class="btn-gray" data-color="gray">Grijs</button>
+    <button class="btn-blue" data-color="lightblue">Lichtblauw</button>
+    <button class="btn-orange" data-color="orange">Oranje</button>
+    <button class="btn-reset" id="reset">Reset</button>
+    <button class="btn-rotate" id="toggleRotate">Stop rotatie</button>
+    <button class="btn-letters" id="toggleLetters">Letters aan</button>
+    <button class="btn-emoji" id="toggleEmoji">Emoji aan</button>
+    <button class="btn-startpagina" id="home">Startpagina</button>
+    <input type="range" id="transparencyRange" min="0" max="1" step="0.01" value="0.5">
+</div>
+
+<script>
+const grid = document.getElementById('grid');
+const overlay = document.querySelector('.image-overlay');
+const transparencyRange = document.getElementById('transparencyRange');
+const starSize = 40;
+let cols, rows, stars = [];
+let rotating = true;
+let lettersOn = false;
+let emojiOn = false;
+let growingStar, startX, startY, grown = false;
+
+function createStars() {
+    grid.innerHTML = '';
+    stars = [];
+    grown = false;
+
+    cols = Math.floor(window.innerWidth / starSize);
+    rows = Math.floor(window.innerHeight / starSize);
+
+    for (let y = 0; y < rows; y++) {
+        for (let x = 0; x < cols; x++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.left = `${x * starSize}px`;
+            star.style.top  = `${y * starSize}px`;
+
+            star.dataset.x = x * starSize;
+            star.dataset.y = y * starSize;
+
+            grid.appendChild(star);
+            stars.push(star);
+        }
+    }
+
+    const midCol = Math.floor(cols / 2);
+    const midRow = Math.floor(rows / 2);
+
+    growingStar = stars[midRow * cols + midCol];
+
+    startX = parseFloat(growingStar.dataset.x);
+    startY = parseFloat(growingStar.dataset.y);
+}
+
+createStars();
+
+function generateLetters() {
+    removeLetters();
+    if (!grown || (!lettersOn && !emojiOn)) return;
+
+    const container = document.createElement('div');
+    container.className = 'letters';
+
+    const count = 100;
+    for (let i = 0; i < count; i++) {
+        const span = document.createElement('span');
+        span.className = 'letter';
+
+        if (emojiOn) {
+            const emojis = ['😀','😂','😍','😎','🤩','🥳','😜','🌟','🔥','🍀','💖','🎵'];
+            span.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        } else {
+            span.textContent = String.fromCharCode(65 + Math.floor(Math.random() * 26));
+            const gray = Math.floor(80 + Math.random() * 150);
+            span.style.color = `rgb(${gray}, ${gray}, ${gray})`;
+        }
+
+        span.style.left = `${Math.random() * 100}%`;
+        span.style.top  = `${Math.random() * 100}%`;
+        span.style.fontSize = `${10 + Math.random() * 90}px`;
+
+        container.appendChild(span);
+    }
+
+    growingStar.appendChild(container);
+}
+
+function removeLetters() {
+    const existing = growingStar.querySelector('.letters');
+    if (existing) existing.remove();
+}
+
+// GROEIEN / KLEIN WORDEN
+document.addEventListener('pointerdown', (e) => {
+    if (e.target.tagName === 'BUTTON' || e.target.tagName === 'INPUT') return;
+
+    grown = !grown;
+
+    if (grown) {
+        const size = Math.min(500, window.innerWidth * 0.8, window.innerHeight * 0.8);
+        growingStar.classList.add('grown');
+        growingStar.style.backgroundColor = 'white';
+        growingStar.style.width = `${size}px`;
+        growingStar.style.height = `${size}px`;
+        growingStar.style.left = `${(window.innerWidth - size) / 2}px`;
+        growingStar.style.top  = `${(window.innerHeight - size) / 2}px`;
+        generateLetters();
+    } else {
+        growingStar.classList.remove('grown');
+        growingStar.style.width = '40px';
+        growingStar.style.height = '40px';
+        growingStar.style.left = startX + 'px';
+        growingStar.style.top  = startY + 'px';
+        removeLetters();
+    }
+});
+
+// Kleuren
+document.querySelectorAll('[data-color]').forEach(btn => {
+    btn.addEventListener('click', () => {
+        stars.forEach(star => {
+            if (star !== growingStar) star.style.backgroundColor = btn.dataset.color;
+        });
+    });
+});
+
+// Reset
+document.getElementById('reset').addEventListener('click', () => {
+    grown = false;
+    lettersOn = false;
+    emojiOn = false;
+    document.getElementById('toggleLetters').textContent = 'Letters aan';
+    document.getElementById('toggleEmoji').textContent = 'Emoji aan';
+    stars.forEach(star => {
+        star.classList.remove('grown');
+        star.style.width = '40px';
+        star.style.height = '40px';
+        star.style.backgroundColor = 'red';
+        star.style.left = star.dataset.x + 'px';
+        star.style.top  = star.dataset.y + 'px';
+    });
+    removeLetters();
+});
+
+// Rotatie
+document.getElementById('toggleRotate').addEventListener('click', function () {
+    rotating = !rotating;
+    stars.forEach(star => {
+        star.style.animationPlayState = rotating ? 'running' : 'paused';
+    });
+    this.textContent = rotating ? 'Stop rotatie' : 'Start rotatie';
+});
+
+// Letters aan/uit
+document.getElementById('toggleLetters').addEventListener('click', function () {
+    lettersOn = !lettersOn;
+    if (lettersOn) emojiOn = false;
+    this.textContent = lettersOn ? 'Letters uit' : 'Letters aan';
+    generateLetters();
+});
+
+// Emoji aan/uit
+document.getElementById('toggleEmoji').addEventListener('click', function () {
+    emojiOn = !emojiOn;
+    if (emojiOn) lettersOn = false;
+    this.textContent = emojiOn ? 'Emoji uit' : 'Emoji aan';
+    generateLetters();
+});
+
+// Startpagina
+document.getElementById('home').addEventListener('click', () => {
+    window.location.href = 'index.html';
+});
+
+// Transparantie slider
+transparencyRange.addEventListener('input', function () {
+    overlay.style.opacity = this.value;
+});
+
+window.addEventListener('resize', createStars);
+</script>
+
+</body>
+</html>

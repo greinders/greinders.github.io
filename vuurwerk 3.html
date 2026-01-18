@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Geert Reinders – fading stars</title>
+
+<style>
+    body {
+        margin: 0;
+        overflow: hidden;
+        background: #777;
+        height: 100vh;
+    }
+
+    .container {
+        position: absolute;
+        white-space: nowrap;
+        top: 50%;
+        transform: translateY(-50%);
+        left: -120%;
+        animation: schuif 10s linear infinite;
+    }
+
+    .letter {
+        display: inline-block;
+        font-size: 100pt;
+        color: white;
+        text-shadow: 0 0 30px rgba(0,0,0,0.95);
+        position: relative;
+        transition:
+            color 0.5s ease,
+            transform 0.5s ease;
+    }
+
+    .star {
+        position: absolute;
+        pointer-events: none;
+        font-size: 22px;
+        animation: explode 1.4s ease-out forwards;
+        filter: drop-shadow(0 0 8px rgba(0,0,0,0.8));
+    }
+
+    @keyframes schuif {
+        0%   { left: -120%; }
+        100% { left: 120%; }
+    }
+
+    @keyframes explode {
+        0% {
+            opacity: 1;
+            transform: translate(0,0) scale(0.7);
+        }
+        50% {
+            opacity: 1;
+            transform:
+                translate(calc(var(--x) * 0.6),
+                          calc(var(--y) * 0.6))
+                scale(1.9);
+        }
+        100% {
+            opacity: 0;
+            transform:
+                translate(var(--x), var(--y))
+                scale(0.3);
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<div class="container" id="naam"></div>
+
+<script>
+const text = "Geert Reinders";
+const container = document.getElementById("naam");
+
+// letters bouwen
+[...text].forEach(char => {
+    const span = document.createElement("span");
+    span.className = "letter";
+    span.textContent = char === " " ? "\u00A0" : char;
+    container.appendChild(span);
+});
+
+function randomColor() {
+    return `hsl(${Math.random() * 360}, 100%, 60%)`;
+}
+
+function spawnStars(letter, color) {
+    const count = 10 + Math.floor(Math.random() * 6);
+
+    for (let i = 0; i < count; i++) {
+        const star = document.createElement("div");
+        star.className = "star";
+        star.textContent = "★";
+        star.style.color = color;
+
+        const x = (Math.random() - 0.5) * 240 + "px";
+        const y = (Math.random() - 0.5) * 240 + "px";
+
+        star.style.setProperty("--x", x);
+        star.style.setProperty("--y", y);
+
+        star.style.left =
+            letter.offsetLeft + letter.offsetWidth / 2 + "px";
+        star.style.top =
+            letter.offsetTop + letter.offsetHeight / 2 + "px";
+
+        container.appendChild(star);
+
+        setTimeout(() => star.remove(), 1400);
+    }
+}
+
+function randomEffect() {
+    document.querySelectorAll(".letter").forEach(letter => {
+        if (Math.random() < 0.25) {
+            const color = randomColor();
+            const scale = 0.9 + Math.random() * 0.7;
+
+            letter.style.color = color;
+            letter.style.transform = `scale(${scale})`;
+
+            spawnStars(letter, color);
+        } else {
+            letter.style.color = "white";
+            letter.style.transform = "scale(1)";
+        }
+    });
+}
+
+setInterval(randomEffect, 800);
+</script>
+
+</body>
+</html>

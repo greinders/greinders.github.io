@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fotopagina – device preview</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<!-- LIGHTBOX OVERLAY -->
+<div id="lightbox" class="lightbox">
+    <img id="lightbox-img" src="" alt="">
+    <div class="lightbox-controls">
+        <button onclick="zoomIn()">＋</button>
+        <button onclick="zoomOut()">－</button>
+        <button onclick="closeLightbox()">✕</button>
+    </div>
+<div class="device-frame" id="deviceFrame">
+    <div class="viewport" id="viewport">
+        <div class="gallery" id="gallery">
+            <img src="inca-thuis.jpeg">
+            <img src="landschap-ijssel.jpeg">
+            <img src="lemelerveld.jpeg">
+            <img src="molencate-bos-2.jpeg">
+            <img src="molencate-bos-1.jpeg">
+        </div>
+    </div>
+</div>
+
+<div class="controls">
+    <button class="btn-laptop" onclick="setView('laptop')">Laptop</button>
+    <button class="btn-tablet" onclick="setView('tablet')">Tablet</button>
+    <button class="btn-phone" onclick="setView('phone')">iPhone</button>
+    <button class="btn-rotate" onclick="toggleTablet()">Tablet draaien</button>
+    <button class="btn-zoom" onclick="zoomIn()">＋</button>
+    <button class="btn-zoom" onclick="zoomOut()">－</button>
+</div>
+
+<script src="script.js"></script>
+
+</div>
+</body>
+</html>
