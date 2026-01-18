@@ -3,48 +3,78 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Startpagina</title>
-    <!-- CSS -->
-    <link rel="stylesheet" href="style.css">
 
     <style>
+        /* Algemene body-instellingen */
         body {
             margin: 0;
             min-height: 100vh;
             display: flex;
-            align-items: flex-start; /* start van het scherm */
-            justify-content: flex-start; /* links uitlijnen */
+            flex-direction: column; /* knoppen boven elkaar */
+            align-items: flex-start; /* links uitlijnen */
+            justify-content: flex-start; /* start van het scherm */
             background: #000;
             font-family: Arial, Helvetica, sans-serif;
-            padding: 40px; /* wat ruimte van randen */
+            padding: 40px; /* ruimte van de randen */
             box-sizing: border-box;
         }
 
+        /* Container voor de grote hoofdknoppen */
         .btn-container {
             display: flex;
             flex-direction: column;
-            gap: 20px; /* ruimte tussen knoppen */
+            gap: 16px; /* ruimte tussen knoppen, iets compacter */
+            margin-bottom: 30px; /* ruimte onder deze knoppen */
         }
 
-        a {
-            padding: 20px 32px;
-            background: #ffcc00;
-            color: #000;
+        /* Stijl van de hoofdknoppen */
+        .btn-container a {
+            padding: 14px 24px; /* binnenruimte compacter gemaakt */
+            background: #ffcc00; /* kleur van de buttons */
+            color: #000; /* tekstkleur */
             text-decoration: none;
-            font-size: 22px;
-            border-radius: 12px;
+            font-size: 20px; /* iets kleiner voor compactheid */
+            border-radius: 10px; /* afgeronde hoeken */
             font-weight: bold;
             transition: transform 0.1s ease;
         }
 
-        a:active {
-            transform: scale(0.97);
+        .btn-container a:active {
+            transform: scale(0.97); /* effect bij klikken */
+        }
+
+        /* Navigatie onderaan (nav-buttons) */
+        nav {
+            display: flex;
+            gap: 12px; /* ruimte tussen nav-buttons */
+        }
+
+        nav a {
+            padding: 8px 16px; /* compacter dan hoofdknoppen */
+            background-color: #444; /* kleur van nav-buttons */
+            color: #fff; /* tekstkleur nav */
+            text-decoration: none;
+            font-size: 16px; /* kleiner dan hoofdknoppen */
+            border-radius: 6px; /* afgeronde hoeken */
+            font-weight: normal;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+        }
+
+        nav a:hover {
+            background-color: #666; /* hover-effect */
+            transform: scale(1.05); /* iets groter bij hover */
         }
 
         /* Responsive voor kleine schermen (zoals iPhone) */
         @media (max-width: 480px) {
-            a {
+            .btn-container a {
                 font-size: 18px;
-                padding: 16px 24px;
+                padding: 12px 20px;
+            }
+
+            nav a {
+                font-size: 14px;
+                padding: 6px 12px;
             }
 
             body {
@@ -57,15 +87,15 @@
 
     <div class="btn-container">
         <a href="sterren-en-knoppen.html">⭐ Open sterren animatie</a>
-        <a href="fotopagina.html">⭐ responsive fotopagina</a>
+        <a href="fotopagina.html">⭐ Responsive fotopagina</a>
         <a href="vuurwerk 3.html">⭐ Naam en sterretjes 3</a>
     </div>
 
     <nav>
-  <a href="index.html">Home</a>
-  <a href="foto.html">Foto’s</a>
-  <a href="contact.html">Contact</a>
-</nav>
+        <a href="index.html">Home</a>
+        <a href="foto.html">Foto’s</a>
+        <a href="contact.html">Contact</a>
+    </nav>
 
 </body>
 </html>
