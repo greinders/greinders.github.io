@@ -1,238 +1,72 @@
-/* =====================================================
-   BASIS / RESET
-   ===================================================== */
-
-* {
-    box-sizing: border-box;
-}
-
-html, body {
+body {
     margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
     background: #000;
-    font-family: Arial, Helvetica, sans-serif;
-}
-
-/* =====================================================
-   STARTPAGINA – LAYOUT
-   ===================================================== */
-
-body.startpagina {
+    font-family: Arial, sans-serif;
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-start;
-    padding: 40px;
 }
 
-/* Hoofdknoppen container */
-.btn-container {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    margin-bottom: 30px;
+/* DEVICE FRAME */
+.device-frame {
+    margin: 20px auto 120px;
+    padding: 20px;
+    background: #222;
+    border-radius: 30px;
+    box-shadow: 0 0 40px rgba(0,0,0,0.8);
+    width: fit-content;
+    transition: all 0.4s ease;
 }
 
-/* Hoofdknoppen */
-.btn-container a {
-    padding: 8px 15px;
-    background: #ffcc00;          /* oranjegeel */
-    color: #000;
-    text-decoration: none;
-    font-size: 20px;
-    font-weight: bold;
-    border-radius: 10px;
-    transition: transform 0.1s ease;
-}
-
-.btn-container a:active {
-    transform: scale(0.97);
-}
-
-/* Navigatie onderaan */
-nav {
-    display: flex;
-    gap: 12px;
-}
-
-nav a {
-    padding: 8px 16px;
-    background-color: #444;       /* donkergrijs */
-    color: #fff;
-    text-decoration: none;
-    font-size: 16px;
-    border-radius: 6px;
-    transition: background-color 0.2s ease, transform 0.1s ease;
-}
-
-nav a:hover {
-    background-color: #666;       /* middelgrijs */
-    transform: scale(1.05);
-}
-
-/* =====================================================
-   STERREN ANIMATIE – ALGEMEEN
-   ===================================================== */
-
-body.sterren {
+/* VIEWPORT */
+.viewport {
+    background: #000;
     overflow: hidden;
-    touch-action: manipulation;
+    transition: max-width 0.4s ease;
 }
 
-/* Overlay afbeelding */
-.image-overlay {
-    position: fixed;
-    inset: 0;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    opacity: 0.5;
-    pointer-events: none;
-    z-index: 5;
-    transition: opacity 0.3s ease;
+/* GALLERY */
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    transition: grid-template-columns 0.4s ease;
 }
 
-/* Stervorm */
-:root {
-    --star-shape: polygon(
-        50% 0%,
-        61% 35%,
-        98% 35%,
-        68% 57%,
-        79% 91%,
-        50% 70%,
-        21% 91%,
-        32% 57%,
-        2% 35%,
-        39% 35%
-    );
+.gallery img {
+    width: 100%;
+    height: auto;
+    display: block;
 }
 
-/* Sterren */
-.star {
-    position: absolute;
-    width: 40px;
-    height: 40px;
-    background: red;
-    clip-path: var(--star-shape);
-    animation: spin 6s linear infinite;
-    transition:
-        background-color 0.5s ease,
-        width 0.5s ease,
-        height 0.5s ease,
-        left 0.5s ease,
-        top 0.5s ease,
-        box-shadow 0.5s ease;
-}
-
-/* Groeiende ster */
-.star.grown {
-    background: white;
-    z-index: 10;
-    animation:
-        spin 6s linear infinite,
-        pulse 1.5s ease-in-out infinite alternate;
-}
-
-/* Letters / emoji in ster */
-.star .letters {
-    position: absolute;
-    inset: 0;
-    clip-path: var(--star-shape);
-    pointer-events: none;
-}
-
-.star .letter {
-    position: absolute;
-    font-weight: bold;
-    user-select: none;
-    transform: translate(-50%, -50%);
-}
-
-/* =====================================================
-   CONTROLS / KNOPPEN
-   ===================================================== */
-
+/* CONTROLS */
 .controls {
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
+    background: #111;
+    padding: 12px 10px;
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
     justify-content: center;
-    padding: 0 20px 10px;
-    z-index: 20;
+    gap: 10px;
 }
 
-.controls button,
-.controls input[type="range"] {
-    padding: 10px 14px;
-    font-size: 14px;
-    font-weight: bold;
+.controls button {
+    border: 2px solid transparent;
+    padding: 10px 16px;
     border-radius: 8px;
-    border: none;
     cursor: pointer;
-    color: #000;
+    color: #fff;
+    font-size: 14px;
+    transition: all 0.2s ease;
 }
 
-/* Knopkleuren */
-.btn-yellow      { background: yellow; }
-.btn-gray        { background: lightgray; }
-.btn-blue        { background: lightblue; }
-.btn-orange      { background: orange; }
-.btn-reset       { background: red; }
-.btn-rotate      { background: violet; }
-.btn-letters     { background: silver; }
-.btn-emoji       { background: pink; }
-.btn-startpagina { background: lightgreen; }
-
-/* =====================================================
-   ANIMATIES
-   ===================================================== */
-
-@keyframes spin {
-    from { transform: rotate(0deg); }
-    to   { transform: rotate(360deg); }
+.controls button.active {
+    box-shadow: 0 0 12px currentColor;
+    border-color: currentColor;
 }
 
-@keyframes pulse {
-    0%   { box-shadow: 0 0 20px 8px rgba(255,255,255,0.4); }
-    100% { box-shadow: 0 0 40px 15px rgba(255,255,255,0.6); }
-}
-
-/* =====================================================
-   RESPONSIVE
-   ===================================================== */
-
-@media (max-width: 600px) {
-    .controls {
-        padding: 0 10px 8px;
-    }
-
-    .controls button,
-    .controls input[type="range"] {
-        padding: 8px 10px;
-        font-size: 12px;
-    }
-}
-
-@media (max-width: 480px) {
-    body.startpagina {
-        padding: 20px;
-    }
-
-    .btn-container a {
-        font-size: 18px;
-        padding: 12px 20px;
-    }
-
-    nav a {
-        font-size: 14px;
-        padding: 6px 12px;
-    }
-}
+.btn-laptop { background: #2ecc71; }
+.btn-tablet { background: #3498db; }
+.btn-phone  { background: #e74c3c; }
+.btn-rotate { background: #9b59b6; }
