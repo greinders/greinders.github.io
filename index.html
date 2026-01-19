@@ -4,87 +4,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Startpagina</title>
 
-    <style>
-        /* Algemene body-instellingen */
-        body {
-            margin: 0;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column; /* knoppen boven elkaar */
-            align-items: flex-start; /* links uitlijnen */
-            justify-content: flex-start; /* start van het scherm */
-            background: #000;
-            font-family: Arial, Helvetica, sans-serif;
-            padding: 40px; /* ruimte van de randen */
-            box-sizing: border-box;
-        }
-
-        /* Container voor de grote hoofdknoppen */
-        .btn-container {
-            display: flex;
-            flex-direction: column;
-            gap: 16px; /* ruimte tussen knoppen, iets compacter */
-            margin-bottom: 30px; /* ruimte onder deze knoppen */
-        }
-
-        /* Stijl van de hoofdknoppen */
-        .btn-container a {
-            padding: 8px 15px; /* binnenruimte compacter gemaakt */
-            background: #ffcc00; /* kleur van de buttons */
-            color: #000; /* tekstkleur */
-            text-decoration: none;
-            font-size: 20px; /* iets kleiner voor compactheid */
-            border-radius: 10px; /* afgeronde hoeken */
-            font-weight: bold;
-            transition: transform 0.1s ease;
-        }
-
-        .btn-container a:active {
-            transform: scale(0.97); /* effect bij klikken */
-        }
-
-        /* Navigatie onderaan (nav-buttons) */
-        nav {
-            display: flex;
-            gap: 12px; /* ruimte tussen nav-buttons */
-        }
-
-        nav a {
-            padding: 8px 16px; /* compacter dan hoofdknoppen */
-            background-color: #444; /* kleur van nav-buttons */
-            color: #fff; /* tekstkleur nav */
-            text-decoration: none;
-            font-size: 16px; /* kleiner dan hoofdknoppen */
-            border-radius: 6px; /* afgeronde hoeken */
-            font-weight: normal;
-            transition: background-color 0.2s ease, transform 0.1s ease;
-        }
-
-        nav a:hover {
-            background-color: #666; /* hover-effect */
-            transform: scale(1.05); /* iets groter bij hover */
-        }
-
-        /* Responsive voor kleine schermen (zoals iPhone) */
-        @media (max-width: 480px) {
-            .btn-container a {
-                font-size: 18px;
-                padding: 12px 20px;
-            }
-
-            nav a {
-                font-size: 14px;
-                padding: 6px 12px;
-            }
-
-            body {
-                padding: 20px;
-            }
-        }
-    </style>
-<link rel="stylesheet" href="styles.css">
-<body class="startpagina"></head>
-<body>
+    
+<link rel="stylesheet" href="base.css">
+<link rel="stylesheet" href="startpagina.css">
+</head>
+<body class="startpagina">
 
     <div class="btn-container">
         <a href="sterren-en-knoppen.html">⭐ Open sterren animatie</a>
