@@ -147,7 +147,27 @@ body {
     0%,100% { transform: translateY(-50%) scaleX(0.7); }
     35%,60% { transform: translateY(-50%) scaleX(1); }
 }
+ /* Layout zodat footer onderaan blijft */
+        body {
+            display: flex;
+            flex-direction: column;
+        }
 
+        /* Pagina-inhoud */
+        main {
+            flex: 1;
+            padding: 20px;
+        }
+
+        /* Footer met knop onderaan */
+        footer {
+            position: sticky;
+            bottom: 0;
+            background-color: #000;
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+        }
   /* Knopstijl */
         .start-button {
             display: inline-block;
