@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<title>Richting – zichtbare typografie</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+    margin: 0;
+    background: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.container {
+    display: flex;
+    align-items: center;
+    gap: 50px;
+}
+
+/* ===== VLAKKEN ===== */
+.white, .red-left, .red-right {
+    position: relative;
+    overflow: visible; /* belangrijk voor tekst */
+}
+
+.white {
+    width: 220px;
+    height: 2px;
+    background: white;
+    animation: whiteGrow 6s cubic-bezier(.4,0,.2,1) infinite;
+}
+
+.red-left, .red-right {
+    height: 160px;
+    width: 4px;
+    background: red;
+    opacity: 0;
+}
+
+.red-left {
+    transform-origin: right center;
+    animation: redLeftGrow 6s cubic-bezier(.4,0,.2,1) infinite;
+}
+
+.red-right {
+    transform-origin: left center;
+    animation: redRightGrow 6s cubic-bezier(.4,0,.2,1) infinite;
+}
+
+/* ===== TEKST ===== */
+.label {
+    position: absolute;
+    white-space: nowrap;
+    font-size: 18px;
+    letter-spacing: 0.12em;
+    opacity: 0.85; /* altijd zichtbaar */
+}
+
+/* Richting onder wit vlak */
+.white .label {
+    color: red;
+    top: calc(100% + 14px);
+    left: 50%;
+    transform-origin: top center;
+    animation: textVertical 6s cubic-bezier(.4,0,.2,1) infinite;
+}
+
+/* links / rechts */
+.red-left .label,
+.red-right .label {
+    color: white;
+    top: 50%;
+    transform-origin: center;
+    animation: textHorizontal 6s cubic-bezier(.4,0,.2,1) infinite;
+}
+
+.red-left .label {
+    right: calc(100% + 16px);
+}
+
+.red-right .label {
+    left: calc(100% + 16px);
+}
+
+/* ===== PIJLEN ===== */
+.arrow {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform-origin: center;
+}
+
+.white .arrow {
+    animation: arrowDown 6s cubic-bezier(.4,0,.2,1) infinite;
+}
+
+.red-left .arrow,
+.red-right .arrow {
+    animation: arrowSide 6s cubic-bezier(.4,0,.2,1) infinite;
+}
+
+/* ===== ANIMATIES ===== */
+@keyframes whiteGrow {
+    0%   { height: 2px; }
+    25%  { height: 160px; }
+    70%  { height: 160px; }
+    100% { height: 2px; }
+}
+
+@keyframes redLeftGrow {
+    0%,25% { width: 4px; opacity: 0; }
+    35%    { opacity: 1; }
+    60%    { width: 140px; }
+    100%   { width: 4px; opacity: 0; }
+}
+
+@keyframes redRightGrow {
+    0%,25% { width: 4px; opacity: 0; }
+    35%    { opacity: 1; }
+    60%    { width: 140px; }
+    100%   { width: 4px; opacity: 0; }
+}
+
+/* pijlen */
+@keyframes arrowDown {
+    0%,100% { transform: translate(-50%, -50%) scaleY(0.3); opacity: 0.3; }
+    25%,70% { transform: translate(-50%, -50%) scaleY(1); opacity: 1; }
+}
+
+@keyframes arrowSide {
+    0%,100% { transform: translate(-50%, -50%) scaleX(0.3); opacity: 0.3; }
+    35%,60% { transform: translate(-50%, -50%) scaleX(1); opacity: 1; }
+}
+
+/* tekst */
+@keyframes textVertical {
+    0%,100% { transform: translate(-50%, 0) scaleY(0.7); }
+    25%,70% { transform: translate(-50%, 0) scaleY(1); }
+}
+
+@keyframes textHorizontal {
+    0%,100% { transform: translateY(-50%) scaleX(0.7); }
+    35%,60% { transform: translateY(-50%) scaleX(1); }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- LINKS -->
+    <div class="red-left">
+        <span class="label">links</span>
+        <svg class="arrow" width="80" height="20">
+            <line x1="80" y1="10" x2="12" y2="10" stroke="white" stroke-width="3"/>
+            <polygon points="12,4 0,10 12,16" fill="white"/>
+        </svg>
+    </div>
+
+    <!-- MIDDEN -->
+    <div class="white">
+        <span class="label">Richting</span>
+        <svg class="arrow" width="20" height="80">
+            <line x1="10" y1="0" x2="10" y2="60" stroke="red" stroke-width="3"/>
+            <polygon points="4,60 10,80 16,60" fill="red"/>
+        </svg>
+    </div>
+
+    <!-- RECHTS -->
+    <div class="red-right">
+        <span class="label">rechts</span>
+        <svg class="arrow" width="80" height="20">
+            <line x1="0" y1="10" x2="68" y2="10" stroke="white" stroke-width="3"/>
+            <polygon points="68,4 80,10 68,16" fill="white"/>
+        </svg>
+    </div>
+
+</div>
+
+</body>
+</html>
