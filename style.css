@@ -70,3 +70,8 @@ body {
 .btn-tablet { background: #3498db; }
 .btn-phone  { background: #e74c3c; }
 .btn-rotate { background: #9b59b6; }
+
+  /* Hover-effect naar Starpagina button*/
+        .start-button:hover {
+            background-color: #e0e0e0;
+        }
