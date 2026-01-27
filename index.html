@@ -32,57 +32,26 @@ body {
     font-size: 20px;
     border-radius: 10px;
     font-weight: bold;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-    transition: transform 0.2s ease;
+    box-shadow: 0 14px 30px rgba(0,0,0,0.55);
+    transition: all 1s ease; /* transitie voor beweging/rotatie */
 }
 
-/* subtiel interactie-effect */
+/* Hover-effect */
 .btn-container a:hover {
     transform: scale(1.05);
+    z-index: 100; /* altijd bovenaan bij hover */
 }
 
-/* KRISKRAS POSITIES */
-.btn-container a:nth-child(1) {
-    top: 10%;
-    left: 8%;
-    transform: rotate(-6deg);
-    z-index: 3;
-}
+/* ORIGINELE POSITIES */
+.btn-container a:nth-child(1) { top: 10%; left: 8%; }
+.btn-container a:nth-child(2) { top: 28%; left: 18%; }
+.btn-container a:nth-child(3) { top: 22%; left: 42%; }
+.btn-container a:nth-child(4) { top: 45%; left: 30%; }
+.btn-container a:nth-child(5) { top: 55%; left: 55%; }
 
-.btn-container a:nth-child(2) {
-    top: 28%;
-    left: 18%;
-    transform: rotate(4deg);
-    z-index: 4;
-}
-
-.btn-container a:nth-child(3) {
-    top: 22%;
-    left: 42%;
-    transform: rotate(-3deg);
-    z-index: 2;
-}
-
-.btn-container a:nth-child(4) {
-    top: 45%;
-    left: 30%;
-    transform: rotate(6deg);
-    z-index: 5;
-}
-
-.btn-container a:nth-child(5) {
-    top: 55%;
-    left: 55%;
-    transform: rotate(-5deg);
-    z-index: 1;
-}
-
-/* Mobiel: iets netter, minder overlap */
+/* Mobiel: terug naar lijst */
 @media (max-width: 600px) {
-    .btn-container {
-        height: auto;
-    }
-
+    .btn-container { height: auto; }
     .btn-container a {
         position: relative;
         display: block;
@@ -92,7 +61,6 @@ body {
 }
 </style>
 </head>
-
 <body>
 
 <div class="btn-container">
@@ -102,6 +70,49 @@ body {
     <a href="vuurwerk 3.html">⭐ Naam en sterretjes 3</a>
     <a href="lijn-rechthoek.html">⭐ Lijn naar rechthoek</a>
 </div>
+
+<script>
+// Selecteer alle knoppen
+const buttons = document.querySelectorAll('.btn-container a');
+
+// Sla originele posities op
+const originalPositions = [];
+buttons.forEach(btn => {
+    const top = btn.offsetTop;
+    const left = btn.offsetLeft;
+    originalPositions.push({ top, left });
+});
+
+// Functie: random positie en rotatie
+function randomizeButtons() {
+    buttons.forEach(btn => {
+        // +/- 50px top/left voor schots en scheef effect
+        const offsetTop = (Math.random() - 0.5) * 100;
+        const offsetLeft = (Math.random() - 0.5) * 100;
+        const rotate = (Math.random() - 0.5) * 20; // +/- 10 graden
+
+        btn.style.top = `calc(${btn.offsetTop}px + ${offsetTop}px)`;
+        btn.style.left = `calc(${btn.offsetLeft}px + ${offsetLeft}px)`;
+        btn.style.transform = `rotate(${rotate}deg)`;
+    });
+}
+
+// Functie: terug naar originele posities
+function resetButtons() {
+    buttons.forEach((btn, i) => {
+        const pos = originalPositions[i];
+        btn.style.top = `${pos.top}px`;
+        btn.style.left = `${pos.left}px`;
+        btn.style.transform = `rotate(0deg)`;
+    });
+}
+
+// Start animatie: random kort na load
+window.addEventListener('load', () => {
+    randomizeButtons();
+    setTimeout(resetButtons, 1500); // 1,5s later terug naar origineel
+});
+</script>
 
 </body>
 </html>
