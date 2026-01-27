@@ -1,99 +1,107 @@
+<!DOCTYPE html>
 <html lang="nl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Startpagina</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Startpagina</title>
 
-    <style>
-        /* Algemene body-instellingen */
-        body {
-            margin: 0;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column; /* knoppen boven elkaar */
-            align-items: flex-start; /* links uitlijnen */
-            justify-content: flex-start; /* start van het scherm */
-            background: #000;
-            font-family: Arial, Helvetica, sans-serif;
-            padding: 40px; /* ruimte van de randen */
-            box-sizing: border-box;
-        }
+<style>
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: #000;
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 40px;
+    box-sizing: border-box;
+}
 
-        /* Container voor de grote hoofdknoppen */
-        .btn-container {
-            display: flex;
-            flex-direction: column;
-            gap: 16px; /* ruimte tussen knoppen, iets compacter */
-            margin-bottom: 30px; /* ruimte onder deze knoppen */
-        }
+/* Speelveld voor de knoppen */
+.btn-container {
+    position: relative;
+    width: 100%;
+    height: 70vh;
+}
 
-        /* Stijl van de hoofdknoppen */
-        .btn-container a {
-            padding: 8px 15px; /* binnenruimte compacter gemaakt */
-            background: #ffcc00; /* kleur van de buttons */
-            color: #000; /* tekstkleur */
-            text-decoration: none;
-            font-size: 20px; /* iets kleiner voor compactheid */
-            border-radius: 10px; /* afgeronde hoeken */
-            font-weight: bold;
-            transition: transform 0.1s ease;
-        }
+/* Algemene knopstijl */
+.btn-container a {
+    position: absolute;
+    padding: 10px 18px;
+    background: #ffcc00;
+    color: #000;
+    text-decoration: none;
+    font-size: 20px;
+    border-radius: 10px;
+    font-weight: bold;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    transition: transform 0.2s ease;
+}
 
-        .btn-container a:active {
-            transform: scale(0.97); /* effect bij klikken */
-        }
+/* subtiel interactie-effect */
+.btn-container a:hover {
+    transform: scale(1.05);
+}
 
-        /* Navigatie onderaan (nav-buttons) */
-        nav {
-            display: flex;
-            gap: 12px; /* ruimte tussen nav-buttons */
-        }
+/* KRISKRAS POSITIES */
+.btn-container a:nth-child(1) {
+    top: 10%;
+    left: 8%;
+    transform: rotate(-6deg);
+    z-index: 3;
+}
 
-        nav a {
-            padding: 8px 16px; /* compacter dan hoofdknoppen */
-            background-color: #444; /* kleur van nav-buttons */
-            color: #fff; /* tekstkleur nav */
-            text-decoration: none;
-            font-size: 16px; /* kleiner dan hoofdknoppen */
-            border-radius: 6px; /* afgeronde hoeken */
-            font-weight: normal;
-            transition: background-color 0.2s ease, transform 0.1s ease;
-        }
+.btn-container a:nth-child(2) {
+    top: 28%;
+    left: 18%;
+    transform: rotate(4deg);
+    z-index: 4;
+}
 
-        nav a:hover {
-            background-color: #666; /* hover-effect */
-            transform: scale(1.05); /* iets groter bij hover */
-        }
+.btn-container a:nth-child(3) {
+    top: 22%;
+    left: 42%;
+    transform: rotate(-3deg);
+    z-index: 2;
+}
 
-        /* Responsive voor kleine schermen (zoals iPhone) */
-        @media (max-width: 480px) {
-            .btn-container a {
-                font-size: 18px;
-                padding: 12px 20px;
-            }
+.btn-container a:nth-child(4) {
+    top: 45%;
+    left: 30%;
+    transform: rotate(6deg);
+    z-index: 5;
+}
 
-            nav a {
-                font-size: 14px;
-                padding: 6px 12px;
-            }
+.btn-container a:nth-child(5) {
+    top: 55%;
+    left: 55%;
+    transform: rotate(-5deg);
+    z-index: 1;
+}
 
-            body {
-                padding: 20px;
-            }
-        }
-    </style>
+/* Mobiel: iets netter, minder overlap */
+@media (max-width: 600px) {
+    .btn-container {
+        height: auto;
+    }
+
+    .btn-container a {
+        position: relative;
+        display: block;
+        margin-bottom: 16px;
+        transform: rotate(0deg);
+    }
+}
+</style>
 </head>
+
 <body>
 
-    <div class="btn-container">
-        <a href="sterren-en-knoppen.html">⭐ Open sterren animatie</a>
-        <a href="gedicht.html">⭐ Gedicht</a>
-        <a href="fotopagina.html">⭐ Responsive fotopagina</a>
-        <a href="vuurwerk 3.html">⭐ Naam en sterretjes 3</a>
-        <a href="lijn-rechthoek.html">⭐ Lijn naar rechthoek</a>
-    </div>
-
-  
+<div class="btn-container">
+    <a href="sterren-en-knoppen.html">⭐ Open sterren animatie</a>
+    <a href="gedicht.html">⭐ Gedicht</a>
+    <a href="fotopagina.html">⭐ Responsive fotopagina</a>
+    <a href="vuurwerk 3.html">⭐ Naam en sterretjes 3</a>
+    <a href="lijn-rechthoek.html">⭐ Lijn naar rechthoek</a>
+</div>
 
 </body>
 </html>
