@@ -13,7 +13,7 @@
         height: 100vh;
     }
 
-   .container {
+.container {
     position: absolute;
     white-space: nowrap;
     top: 50%;
@@ -40,10 +40,14 @@
         filter: drop-shadow(0 0 8px rgba(0,0,0,0.8));
     }
 
-    @keyframes schuif {
-        0%   { left: -120%; }
-        100% { left: 120%; }
+  @keyframes schuif {
+    from {
+        transform: translateY(-50%) translateX(-100%);
     }
+    to {
+        transform: translateY(-50%) translateX(calc(100vw + 100%));
+    }
+}
 
     @keyframes explode {
         0% {
