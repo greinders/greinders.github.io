@@ -11,15 +11,14 @@ body {
     min-height: 100vh;
     background: #000;
     font-family: Arial, Helvetica, sans-serif;
-    padding: 40px;
-    box-sizing: border-box;
+    overflow: hidden;
 }
 
-/* Container voor de knoppen */
+/* Container voor knoppen */
 .btn-container {
     position: relative;
     width: 100%;
-    height: 100vh; /* genoeg ruimte voor random */
+    height: 100vh;
 }
 
 /* Algemene knopstijl */
@@ -34,7 +33,7 @@ body {
     border-radius: 10px;
     font-weight: bold;
     box-shadow: 0 14px 30px rgba(0,0,0,0.55);
-    transition: all 1s ease; /* transitie voor beweging/rotatie */
+    transition: all 1s ease; /* vloeiende overgang naar eindpositie */
 }
 
 /* Hover-effect */
@@ -43,7 +42,7 @@ body {
     z-index: 100;
 }
 
-/* Mobiel: terug naar lijst */
+/* Mobiel */
 @media (max-width: 600px) {
     .btn-container a {
         position: relative;
@@ -67,54 +66,67 @@ body {
 </div>
 
 <script>
-// Selecteer alle knoppen
+// Selecteer knoppen
 const buttons = document.querySelectorAll('.btn-container a');
+const container = document.querySelector('.btn-container');
+const containerWidth = container.clientWidth;
+const containerHeight = container.clientHeight;
 
-// Definieer originele posities (links onder elkaar)
+// Originele posities links onder elkaar
 const originalPositions = [];
-const startTop = 0;
+const startTop = 40; // padding
 const gap = 16; // ruimte tussen knoppen
-
 buttons.forEach((btn, i) => {
     const top = startTop + i * (btn.offsetHeight + gap);
-    const left = 0; // helemaal links
+    const left = 0;
     originalPositions.push({ top, left });
-    
-    // initialiseer positie op origineel (kan even nodig zijn)
-    btn.style.top = top + 'px';
-    btn.style.left = left + 'px';
 });
 
-// Functie: random kriskras posities
-function randomizeButtons() {
+// Functie: random startpositie
+function setRandomStartPositions() {
     buttons.forEach(btn => {
-        const offsetTop = (Math.random() - 0.5) * 100; // +/-50px
-        const offsetLeft = (Math.random() - 0.5) * 100; // +/-50px
-        const rotate = (Math.random() - 0.5) * 20; // +/-10 graden
-
-        btn.style.top = `calc(${btn.offsetTop}px + ${offsetTop}px)`;
-        btn.style.left = `calc(${btn.offsetLeft}px + ${offsetLeft}px)`;
+        const randTop = Math.random() * (containerHeight - 60); // 60px marge onderkant
+        const randLeft = Math.random() * (containerWidth - 200); // max breedte van knop
+        const rotate = (Math.random() - 0.5) * 40; // +/-20 graden
+        btn.style.top = randTop + 'px';
+        btn.style.left = randLeft + 'px';
         btn.style.transform = `rotate(${rotate}deg)`;
     });
 }
 
-// Functie: terug naar originele posities
-function resetButtons() {
+// Zweef-effect
+function startFloating() {
+    buttons.forEach(btn => {
+        const amplitude = 10; // max 10px heen/weer
+        const speed = 0.002 + Math.random() * 0.002; // verschillende snelheden
+        let start = Date.now();
+        function float() {
+            const time = Date.now() - start;
+            const dx = Math.sin(time * speed * 2 * Math.PI) * amplitude;
+            const dy = Math.cos(time * speed * 2 * Math.PI) * amplitude;
+            const rotate = Math.sin(time * speed * 2 * Math.PI) * 5; // kleine rotatie
+            btn.style.transform = `translate(${dx}px, ${dy}px) rotate(${rotate}deg)`;
+            requestAnimationFrame(float);
+        }
+        float();
+    });
+}
+
+// Terug naar originele posities
+function resetPositions() {
     buttons.forEach((btn, i) => {
         const pos = originalPositions[i];
+        btn.style.transition = 'all 1.5s ease'; // vloeiend terug
         btn.style.top = pos.top + 'px';
         btn.style.left = pos.left + 'px';
         btn.style.transform = 'rotate(0deg)';
     });
 }
 
-// Start animatie
 window.addEventListener('load', () => {
-    // Eerst random positie
-    randomizeButtons();
-    
-    // Na 1,5s terug naar origineel
-    setTimeout(resetButtons, 1500);
+    setRandomStartPositions(); // willekeurig ergens
+    startFloating();           // lichte zweef beweging
+    setTimeout(resetPositions, 2000); // na 2s terug naar origineel
 });
 </script>
 
