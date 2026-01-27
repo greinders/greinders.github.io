@@ -33,7 +33,7 @@ body {
     border-radius: 10px;
     font-weight: bold;
     box-shadow: 0 14px 30px rgba(0,0,0,0.55);
-    transition: all 1s ease; /* vloeiende overgang naar eindpositie */
+    transition: all 1.5s ease; /* vloeiende overgang naar eindpositie */
 }
 
 /* Hover-effect */
@@ -42,7 +42,7 @@ body {
     z-index: 100;
 }
 
-/* Mobiel */
+/* Mobiel: terug naar lijst */
 @media (max-width: 600px) {
     .btn-container a {
         position: relative;
@@ -72,21 +72,26 @@ const container = document.querySelector('.btn-container');
 const containerWidth = container.clientWidth;
 const containerHeight = container.clientHeight;
 
-// Originele posities links onder elkaar
+// Originele posities links boven elkaar
 const originalPositions = [];
-const startTop = 40; // padding
+const startTop = 20; // kleine marge bovenaan
 const gap = 16; // ruimte tussen knoppen
+
 buttons.forEach((btn, i) => {
     const top = startTop + i * (btn.offsetHeight + gap);
-    const left = 0;
+    const left = 0; // helemaal links
     originalPositions.push({ top, left });
+
+    // initialiseer positie op origineel (voor mobiel fallback)
+    btn.style.top = top + 'px';
+    btn.style.left = left + 'px';
 });
 
 // Functie: random startpositie
 function setRandomStartPositions() {
     buttons.forEach(btn => {
-        const randTop = Math.random() * (containerHeight - 60); // 60px marge onderkant
-        const randLeft = Math.random() * (containerWidth - 200); // max breedte van knop
+        const randTop = Math.random() * (containerHeight - 60); // marge onderkant
+        const randLeft = Math.random() * (containerWidth - 200); // max breedte knop
         const rotate = (Math.random() - 0.5) * 40; // +/-20 graden
         btn.style.top = randTop + 'px';
         btn.style.left = randLeft + 'px';
@@ -112,17 +117,17 @@ function startFloating() {
     });
 }
 
-// Terug naar originele posities
+// Terug naar originele posities (links)
 function resetPositions() {
     buttons.forEach((btn, i) => {
         const pos = originalPositions[i];
-        btn.style.transition = 'all 1.5s ease'; // vloeiend terug
         btn.style.top = pos.top + 'px';
         btn.style.left = pos.left + 'px';
         btn.style.transform = 'rotate(0deg)';
     });
 }
 
+// Start animatie bij load
 window.addEventListener('load', () => {
     setRandomStartPositions(); // willekeurig ergens
     startFloating();           // lichte zweef beweging
