@@ -124,13 +124,29 @@ function startFloating(btn, targetTop, targetLeft) {
     }, 2000);
 }
 
-// Start animatie bij load
 window.addEventListener('load', () => {
-    setRandomStartPositions();
-    buttons.forEach((btn, i) => {
-        const pos = originalPositions[i];
-        startFloating(btn, pos.top, pos.left);
+
+    // Zet startpositie ver rechts, buiten beeld
+    buttons.forEach(btn => {
+        btn.style.top = Math.random() * (containerHeight - 80) + 'px';
+        btn.style.left = containerWidth + 200 + Math.random() * 200 + 'px';
+        btn.style.transform = 'rotate(20deg)';
+        btn.style.opacity = '0';
     });
+
+    // Kleine delay zodat browser dit echt als start ziet
+    setTimeout(() => {
+        buttons.forEach((btn, i) => {
+            const pos = originalPositions[i];
+
+            btn.style.opacity = '1';
+
+            // vertraagde start per knop
+            setTimeout(() => {
+                startFloating(btn, pos.top, pos.left);
+            }, i * 250); // 👈 vertraging per knop
+        });
+    }, 100);
 });
 </script>
 
