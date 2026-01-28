@@ -96,7 +96,11 @@ function setRandomStartPositions() {
         const rotate = (Math.random() - 0.5) * 40; // +/-20 graden
         btn.style.top = randTop + 'px';
         btn.style.left = randLeft + 'px';
-        btn.style.transform = `rotate(${rotate}deg)`;
+        if (rotatingButtons.has(btn)) {
+    btn.style.transform = 'rotate(120deg)';
+} else {
+    btn.style.transform = 'rotate(15deg)';
+}
     });
 }
 
@@ -112,7 +116,9 @@ function startFloating(btn, targetTop, targetLeft) {
         const time = Date.now() - startTime;
         const dx = Math.sin(time * speed * 2 * Math.PI) * amplitude;
         const dy = Math.cos(time * speed * 2 * Math.PI) * amplitude;
-        const rotate = Math.sin(time * speed * 2 * Math.PI) * 5;
+        const rotate = rotatingButtons.has(btn)
+    ? Math.sin(time * speed * 2 * Math.PI) * 18
+    : Math.sin(time * speed * 2 * Math.PI) * 5;
         btn.style.transform = `translate(${dx}px, ${dy}px) rotate(${rotate}deg)`;
         requestAnimationFrame(float);
     }
