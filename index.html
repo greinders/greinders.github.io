@@ -92,7 +92,7 @@ buttons.forEach((btn, i) => {
 function setRandomStartPositions() {
     buttons.forEach(btn => {
         const randTop = Math.random() * (containerHeight - 60);
-        const randLeft = Math.random() * (containerWidth - 200);
+        const randLeft = containerWidth * 0.6 + Math.random() * (containerWidth * 0.35);
         const rotate = (Math.random() - 0.5) * 40; // +/-20 graden
         btn.style.top = randTop + 'px';
         btn.style.left = randLeft + 'px';
