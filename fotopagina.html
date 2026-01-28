@@ -4,26 +4,131 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Fotopagina – device preview</title>
-<link rel="stylesheet" href="style.css">
+
+<style>
+body {
+    margin: 0;
+    background: #000;
+    font-family: Arial, sans-serif;
+    color: #fff;
+}
+
+/* DEVICE FRAME */
+.device-frame {
+    width: 1200px;
+    max-width: 95%;
+    margin: 40px auto 120px;
+    background: #222;
+    padding: 20px;
+    border-radius: 30px;
+    transition: all 0.4s ease;
+}
+
+/* VIEWPORT */
+.viewport {
+    overflow: hidden;
+    background: #000;
+}
+
+/* GALLERY */
+.gallery {
+    display: flex;
+    gap: 20px;
+    transition: transform 0.3s ease;
+}
+
+.gallery img {
+    max-width: 100%;
+    height: auto;
+    cursor: pointer;
+}
+
+/* CONTROLS */
+.controls {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.controls button,
+.start-button {
+    padding: 10px 14px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+/* Buttons */
+.btn-laptop { background: #444; color: #fff; }
+.btn-tablet { background: #555; color: #fff; }
+.btn-phone  { background: #666; color: #fff; }
+.btn-rotate { background: #777; color: #fff; }
+.btn-zoom   { background: #888; color: #fff; }
+
+.start-button {
+    background: lightgreen;
+    color: #000;
+    text-decoration: none;
+}
+
+/* RESET BUTTON */
+.btn-reset {
+    background: red;
+    color: #fff;
+    font-weight: bold;
+}
+
+/* LIGHTBOX */
+.lightbox {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.9);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.lightbox img {
+    max-width: 90%;
+    max-height: 80%;
+}
+
+.lightbox-controls {
+    margin-top: 10px;
+}
+
+.lightbox-controls button {
+    font-size: 20px;
+    margin: 0 5px;
+}
+</style>
 </head>
 
 <body>
-<!-- LIGHTBOX OVERLAY -->
+
+<!-- LIGHTBOX -->
 <div id="lightbox" class="lightbox">
-    <img id="lightbox-img" src="" alt="">
+    <img id="lightbox-img" src="">
     <div class="lightbox-controls">
         <button onclick="zoomIn()">＋</button>
         <button onclick="zoomOut()">－</button>
         <button onclick="closeLightbox()">✕</button>
     </div>
+</div>
+
 <div class="device-frame" id="deviceFrame">
-    <div class="viewport" id="viewport">
+    <div class="viewport">
         <div class="gallery" id="gallery">
-            <img src="inca-thuis.jpeg">
-            <img src="landschap-ijssel.jpeg">
-            <img src="lemelerveld.jpeg">
-            <img src="molencate-bos-2.jpeg">
-            <img src="molencate-bos-1.jpeg">
+            <img src="inca-thuis.jpeg" onclick="openLightbox(this.src)">
+            <img src="landschap-ijssel.jpeg" onclick="openLightbox(this.src)">
+            <img src="lemelerveld.jpeg" onclick="openLightbox(this.src)">
+            <img src="molencate-bos-2.jpeg" onclick="openLightbox(this.src)">
+            <img src="molencate-bos-1.jpeg" onclick="openLightbox(this.src)">
         </div>
     </div>
 </div>
@@ -35,12 +140,79 @@
     <button class="btn-rotate" onclick="toggleTablet()">Tablet draaien</button>
     <button class="btn-zoom" onclick="zoomIn()">＋</button>
     <button class="btn-zoom" onclick="zoomOut()">－</button>
- <!-- Startpagina knop rechts -->
+
+    <!-- RESET -->
+    <button class="btn-reset" onclick="resetPage()">Reset</button>
+
     <a href="index.html" class="start-button">Startpagina</a>
 </div>
 
-<script src="script.js"></script>
+<script>
+let scale = 1;
+let rotated = false;
 
-</div>
+const gallery = document.getElementById("gallery");
+const deviceFrame = document.getElementById("deviceFrame");
+const lightbox = document.getElementById("lightbox");
+const lightboxImg = document.getElementById("lightbox-img");
+
+/* ZOOM */
+function zoomIn() {
+    scale += 0.1;
+    applyZoom();
+}
+
+function zoomOut() {
+    scale = Math.max(0.5, scale - 0.1);
+    applyZoom();
+}
+
+function applyZoom() {
+    gallery.style.transform = `scale(${scale})`;
+}
+
+/* DEVICE VIEW */
+function setView(view) {
+    rotated = false;
+    deviceFrame.style.transform = "rotate(0deg)";
+
+    if (view === "laptop") deviceFrame.style.width = "1200px";
+    if (view === "tablet") deviceFrame.style.width = "800px";
+    if (view === "phone")  deviceFrame.style.width = "375px";
+}
+
+/* ROTATE */
+function toggleTablet() {
+    rotated = !rotated;
+    deviceFrame.style.transform = rotated ? "rotate(90deg)" : "rotate(0deg)";
+}
+
+/* LIGHTBOX */
+function openLightbox(src) {
+    lightbox.style.display = "flex";
+    lightboxImg.src = src;
+}
+
+function closeLightbox() {
+    lightbox.style.display = "none";
+}
+
+/* RESET */
+function resetPage() {
+    // zoom reset
+    scale = 1;
+    applyZoom();
+
+    // device reset
+    setView("laptop");
+
+    // lightbox dicht
+    closeLightbox();
+
+    // scroll terug naar boven
+    window.scrollTo({ top: 0, behavior: "smooth" });
+}
+</script>
+
 </body>
 </html>
