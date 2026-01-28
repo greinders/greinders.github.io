@@ -68,6 +68,10 @@ body {
 <script>
 // Selecteer knoppen
 const buttons = document.querySelectorAll('.btn-container a');
+    // Kies willekeurig welke knoppen extra mogen roteren (ongeveer 40%)
+const rotatingButtons = new Set(
+    [...buttons].filter(() => Math.random() < 0.4)
+);
 const container = document.querySelector('.btn-container');
 const containerWidth = container.clientWidth;
 const containerHeight = container.clientHeight;
