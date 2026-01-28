@@ -6,73 +6,95 @@
 <title>Fotopagina – device preview</title>
 
 <style>
-body {
+/* =========================
+   BASIS PAGINA / SCROLL
+   ========================= */
+html, body {
     margin: 0;
+    padding: 0;
     background: #000;
     font-family: Arial, sans-serif;
+    overflow-y: auto;   /* SCROLL AAN */
     color: #fff;
 }
 
-/* DEVICE FRAME */
+/* =========================
+   DEVICE FRAME
+   ========================= */
 .device-frame {
     width: 1200px;
     max-width: 95%;
-    margin: 40px auto 120px;
-    background: #222;
+    margin: 40px auto 180px; /* ruimte onderin voor knoppen */
     padding: 20px;
+    background: #222;
     border-radius: 30px;
     transition: all 0.4s ease;
 }
 
-/* VIEWPORT */
+/* =========================
+   VIEWPORT (alleen hier afkappen)
+   ========================= */
 .viewport {
-    overflow: hidden;
     background: #000;
+    overflow: hidden;
 }
 
-/* GALLERY */
+/* =========================
+   GALLERY
+   ========================= */
 .gallery {
     display: flex;
+    flex-direction: column;
     gap: 20px;
     transition: transform 0.3s ease;
 }
 
 .gallery img {
-    max-width: 100%;
+    width: 100%;
     height: auto;
     cursor: pointer;
 }
 
+/* =========================
+   CONTROLS (gecentreerd)
+   ========================= */
 .controls {
     position: fixed;
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
-    
+
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
     justify-content: center;
 }
 
-/* GEEN algemene achtergrondkleur meer */
+/* algemene knopvorm (GEEN kleur!) */
 .controls button,
 .start-button {
     padding: 10px 14px;
     border: none;
     border-radius: 6px;
-    cursor: pointer;
     font-size: 14px;
+    cursor: pointer;
 }
 
-/* OORSPRONKELIJKE KLEUREN PER KNOP */
-.btn-laptop { background: #1e90ff; color: #fff; }   /* blauw */
-.btn-tablet { background: #ff9800; color: #000; }   /* oranje */
-.btn-phone  { background: #9c27b0; color: #fff; }   /* paars */
-.btn-rotate { background: #00bcd4; color: #000; }   /* cyaan */
-.btn-zoom   { background: #4caf50; color: #fff; }   /* groen */
+/* oorspronkelijke knopkleuren */
+.btn-laptop { background: #1e90ff; color: #fff; }
+.btn-tablet { background: #ff9800; color: #000; }
+.btn-phone  { background: #9c27b0; color: #fff; }
+.btn-rotate { background: #00bcd4; color: #000; }
+.btn-zoom   { background: #4caf50; color: #fff; }
 
-/* STARTPAGINA */
+/* resetknop */
+.btn-reset {
+    background: red;
+    color: #fff;
+    font-weight: bold;
+}
+
+/* startpagina */
 .start-button {
     background: lightgreen;
     color: #000;
@@ -80,14 +102,9 @@ body {
     font-weight: bold;
 }
 
-/* RESET – bewust afwijkend */
-.btn-reset {
-    background: red;
-    color: #fff;
-    font-weight: bold;
-}
-
-/* LIGHTBOX */
+/* =========================
+   LIGHTBOX
+   ========================= */
 .lightbox {
     position: fixed;
     inset: 0;
@@ -96,6 +113,7 @@ body {
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    z-index: 1000;
 }
 
 .lightbox img {
@@ -118,7 +136,7 @@ body {
 
 <!-- LIGHTBOX -->
 <div id="lightbox" class="lightbox">
-    <img id="lightbox-img" src="">
+    <img id="lightbox-img" src="" alt="">
     <div class="lightbox-controls">
         <button onclick="zoomIn()">＋</button>
         <button onclick="zoomOut()">－</button>
@@ -126,6 +144,7 @@ body {
     </div>
 </div>
 
+<!-- DEVICE PREVIEW -->
 <div class="device-frame" id="deviceFrame">
     <div class="viewport">
         <div class="gallery" id="gallery">
@@ -138,6 +157,7 @@ body {
     </div>
 </div>
 
+<!-- CONTROLS -->
 <div class="controls">
     <button class="btn-laptop" onclick="setView('laptop')">Laptop</button>
     <button class="btn-tablet" onclick="setView('tablet')">Tablet</button>
@@ -145,10 +165,7 @@ body {
     <button class="btn-rotate" onclick="toggleTablet()">Tablet draaien</button>
     <button class="btn-zoom" onclick="zoomIn()">＋</button>
     <button class="btn-zoom" onclick="zoomOut()">－</button>
-
-    <!-- RESET -->
     <button class="btn-reset" onclick="resetPage()">Reset</button>
-
     <a href="index.html" class="start-button">Startpagina</a>
 </div>
 
@@ -176,7 +193,7 @@ function applyZoom() {
     gallery.style.transform = `scale(${scale})`;
 }
 
-/* DEVICE VIEW */
+/* DEVICE VIEWS */
 function setView(view) {
     rotated = false;
     deviceFrame.style.transform = "rotate(0deg)";
@@ -204,17 +221,10 @@ function closeLightbox() {
 
 /* RESET */
 function resetPage() {
-    // zoom reset
     scale = 1;
     applyZoom();
-
-    // device reset
     setView("laptop");
-
-    // lightbox dicht
     closeLightbox();
-
-    // scroll terug naar boven
     window.scrollTo({ top: 0, behavior: "smooth" });
 }
 </script>
