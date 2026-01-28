@@ -82,10 +82,6 @@ buttons.forEach((btn, i) => {
     const top = startTop + i * (btn.offsetHeight + gap);
     const left = leftMargin; // marge van 15px
     originalPositions.push({ top, left });
-
-    // initialiseer positie op origineel (voor mobiel fallback)
-    btn.style.top = top + 'px';
-    btn.style.left = left + 'px';
 });
 
 // Functie: random startpositie
